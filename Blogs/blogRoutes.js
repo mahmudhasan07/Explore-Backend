@@ -27,9 +27,6 @@ router.post("/blogs", async (req, res) => {
 router.patch(`/blogs/:id`, async (req, res) => {
     const id = req.params.id
     const data = req.body
-    console.log(data);
-
-    // const query = {_id : new isValidObjectId()}
     const update = {
         $set : {
             likes : data?.likes
