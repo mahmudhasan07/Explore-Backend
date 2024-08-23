@@ -27,13 +27,19 @@ router.post("/blogs", async (req, res) => {
 router.patch(`/blogs/:id`, async (req, res) => {
     const id = req.params.id
     const data = req.body
-    const update = {
-        $set : {
-            likes : data?.likes
+    let update = {}
+
+    if(data?.likes){
+        update = {
+            $set : {
+                likes : data?.likes
+            }
         }
     }
-
-    const options = {upsert: true }
+    if(data?.comments){
+        
+    }
+ const options = {upsert: true }
 
     const result = await blogSchema.findByIdAndUpdate(id, update, options)
     // console.log(result);
