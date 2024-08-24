@@ -37,7 +37,11 @@ router.patch(`/blogs/:id`, async (req, res) => {
         }
     }
     if(data?.comments){
-        
+        update = {
+            $set : {
+                comments : data?.comments
+            }
+        }
     }
  const options = {upsert: true }
 
