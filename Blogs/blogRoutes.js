@@ -15,6 +15,21 @@ router.get("/blogs/:id", async (req, res) => {
     res.send(result)
 
 })
+
+
+router.get('/likes/:id', async(req,res)=>{
+    const id = req.params.id
+    const data = req.body
+    console.log(data);
+    
+    const result = await blogSchema.findById(id)
+    if (result) {
+        const like = result?.likes?.find(e=> e== data?.user)
+        console.log(like);
+        
+    }
+
+})
 router.post("/blogs", async (req, res) => {
     const data = req.body
     console.log(data);
