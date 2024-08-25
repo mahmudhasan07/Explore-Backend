@@ -5,7 +5,7 @@ const router = express.Router()
 
 
 router.get("/blogs", async (req, res) => {
-    const result = await blogSchema.find()
+    const result = await blogSchema.find().sort()
     res.send(result)
 })
 
@@ -19,14 +19,11 @@ router.get("/blogs/:id", async (req, res) => {
 
 router.get('/likes/:id', async(req,res)=>{
     const id = req.params.id
-    const data = req.body
-    console.log(data);
-    
+    const user = req.query.user
     const result = await blogSchema.findById(id)
     if (result) {
-        const like = result?.likes?.find(e=> e== data?.user)
-        console.log(like);
-        
+        const like = result?.likes?.find(e=> e== user)
+        res.send(like)    
     }
 
 })
