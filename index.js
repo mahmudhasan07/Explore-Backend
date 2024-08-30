@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 // import data from "./Blogs/blogSchema.js"
 import blogRoutes from "./Blogs/blogRoutes.js"
 import 'dotenv/config'
+import MyBlogRoute from './MyBlogs/MyBlogRoute.js';
 // import blogRoutes from '../backend/Blogs/blogRoutes'
 const app = express()
 const port = 5000
@@ -35,6 +36,7 @@ app.get('/', async (req, res) => {
 })
 
 app.use("/", blogRoutes)
+// app.use("/", MyBlogRoute)
 
 app.listen(port, () => {
     console.log(`The server is running at ${port} `);

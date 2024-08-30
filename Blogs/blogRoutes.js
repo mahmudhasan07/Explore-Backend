@@ -1,6 +1,5 @@
 import express from 'express'
 import blogSchema from './blogSchema.js';
-import { isValidObjectId } from 'mongoose';
 const router = express.Router()
 
 
@@ -11,7 +10,7 @@ router.get("/blogs", async (req, res) => {
 
 
 router.get('/my-blogs', async (req, res) => {
-    const email = req?.query.email
+    const email = req?.query.data
     const query = { email: email }
     const result = await blogSchema.find(query)
     res.send(result)
@@ -46,6 +45,8 @@ router.post("/blogs", async (req, res) => {
 router.patch(`/blogs/:id`, async (req, res) => {
     const id = req.params.id
     const data = req.body
+    console.log(data);
+    
     let update = {}
 
     if (data?.likes) {
@@ -65,7 +66,7 @@ router.patch(`/blogs/:id`, async (req, res) => {
     const options = { upsert: true }
 
     const result = await blogSchema.findByIdAndUpdate(id, update, options)
-    // console.log(result);
+    console.log(result);
     res.send(result)
 
 })
