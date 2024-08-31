@@ -34,6 +34,23 @@ router.get('/likes/:id', async (req, res) => {
     }
 
 })
+
+
+router.get("/ratting/:id", async (req, res) => {
+    const id = req.params.id
+    const result = await blogSchema.findById(id)
+    if (result) {
+        const totalRatting = result?.comments?.reduce((a, b) => a + b.ratting, 0)
+        const averageRatting = totalRatting/result?.comments?.length
+        if(averageRatting >0){
+            res.send({averageRatting})
+        }
+        else{
+            res.send({averageRatting})
+            
+        }
+    }
+})
 router.post("/blogs", async (req, res) => {
     const data = req.body
     console.log(data);
@@ -46,7 +63,7 @@ router.patch(`/blogs/:id`, async (req, res) => {
     const id = req.params.id
     const data = req.body
     console.log(data);
-    
+
     let update = {}
 
     if (data?.likes) {
