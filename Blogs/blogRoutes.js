@@ -36,6 +36,7 @@ router.get('/likes/:id', async (req, res) => {
 })
 
 
+
 router.get("/ratting/:id", async (req, res) => {
     const id = req.params.id
     const result = await blogSchema.findById(id)
@@ -51,6 +52,15 @@ router.get("/ratting/:id", async (req, res) => {
         }
     }
 })
+
+
+router.get('/topRatting', async(req,res)=>{
+    const result = await blogSchema.find()
+    const findData = result.find((e)=> e.comments.find(e=> e.ratting))
+    res.send(findData)
+    
+})
+
 router.post("/blogs", async (req, res) => {
     const data = req.body
     console.log(data);
@@ -62,10 +72,7 @@ router.post("/blogs", async (req, res) => {
 router.patch(`/blogs/:id`, async (req, res) => {
     const id = req.params.id
     const data = req.body
-    console.log(data);
-
     let update = {}
-
     if (data?.likes) {
         update = {
             $set: {
@@ -83,7 +90,6 @@ router.patch(`/blogs/:id`, async (req, res) => {
     const options = { upsert: true }
 
     const result = await blogSchema.findByIdAndUpdate(id, update, options)
-    console.log(result);
     res.send(result)
 
 })
