@@ -6,8 +6,9 @@ const blogSchema = new mongoose.Schema({
     details: String,
     email: String,
     hostImages: Array,
-    likes : Array,
-    comments : Array
+    likes: Array,
+    comments: Array,
+    averageRatting: Number
 })
 
 export default mongoose.model("blogs", blogSchema)
