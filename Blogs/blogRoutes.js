@@ -36,11 +36,10 @@ router.get('/likes/:id', async (req, res) => {
 })
 
 
-router.get('/topRatting', async(req,res)=>{
-    const result = await blogSchema.find()
-    const findData = result.find((e)=> e.comments.find(e=> e.ratting))
-    res.send(findData)
-    
+router.get('/topRatting', async (req, res) => {
+    const result = await blogSchema.find().exists("averageRatting").sort({ averageRatting : -1 })
+    res.send(result)
+
 })
 
 router.post("/blogs", async (req, res) => {
@@ -64,11 +63,11 @@ router.patch(`/blogs/:id`, async (req, res) => {
     }
     if (data?.comments) {
         const totalRatting = data?.comments?.reduce((a, b) => a + b.ratting, 0)
-        const averageRatting = totalRatting/data?.comments?.length
+        const averageRatting = totalRatting / data?.comments?.length
         update = {
             $set: {
                 comments: data?.comments,
-                averageRatting : averageRatting
+                averageRatting: averageRatting
             }
         }
     }
