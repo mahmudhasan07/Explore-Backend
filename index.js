@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 // import data from "./Blogs/blogSchema.js"
+import cookieParser from 'cookie-parser';
 import blogRoutes from "./Blogs/blogRoutes.js"
 import 'dotenv/config'
 import MyBlogRoute from './MyBlogs/MyBlogRoute.js';
@@ -14,7 +15,7 @@ app.use(cors({
     origin : ['http://localhost:3000'],
     credentials : true
 }))
-
+app.use(cookieParser())
 
 async function Run() {
     try {
@@ -36,7 +37,7 @@ app.get('/', async (req, res) => {
 })
 
 app.use("/", blogRoutes)
-// app.use("/", MyBlogRoute)
+app.use("/", MyBlogRoute)
 
 app.listen(port, () => {
     console.log(`The server is running at ${port} `);

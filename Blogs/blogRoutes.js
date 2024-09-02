@@ -1,21 +1,26 @@
 import express from 'express'
 import blogSchema from './blogSchema.js';
+import VerifyToken from '../Token/VerifyToken.js';
 const router = express.Router()
 
 
 router.get("/blogs", async (req, res) => {
-    const result = await blogSchema.find().sort()
+    const result = await blogSchema.find()
     res.send(result)
 })
 
 
-router.get('/my-blogs', async (req, res) => {
+router.get('/my-blogs', VerifyToken, async (req, res) => {
     const email = req?.query.data
     const query = { email: email }
-    const result = await blogSchema.find(query)
-    res.send(result)
+    if (req.user.email == email) {
+        const result = await blogSchema.find(query)
+        res.send(result)
+    }
+    else{
+        res.send({message : "vul Manush tmi"})
+    }
 })
-
 router.get("/blogs/:id", async (req, res) => {
     const id = req.params.id
     const result = await blogSchema.findById(id)
@@ -37,7 +42,7 @@ router.get('/likes/:id', async (req, res) => {
 
 
 router.get('/topRatting', async (req, res) => {
-    const result = await blogSchema.find().exists("averageRatting").sort({ averageRatting : -1 })
+    const result = await blogSchema.find().exists("averageRatting").sort({ averageRatting: -1 })
     res.send(result)
 
 })
