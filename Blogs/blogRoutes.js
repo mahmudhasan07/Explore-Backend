@@ -5,8 +5,17 @@ const router = express.Router()
 
 
 router.get("/blogs", async (req, res) => {
-    const result = await blogSchema.find()
-    res.send(result)
+    const query = req.query.data
+    if (query) {
+        const filter = [{ name: { $regex: query , $options :"i"} }, { location: { $regex: query, $options :"i" } }]
+        const result = await blogSchema.find().or(filter)
+        res.send(result)
+    }
+    else {
+        const result = await blogSchema.find()
+        res.send(result)
+    }
+
 })
 
 
@@ -17,8 +26,8 @@ router.get('/my-blogs', VerifyToken, async (req, res) => {
         const result = await blogSchema.find(query)
         res.send(result)
     }
-    else{
-        res.send({message : "vul Manush tmi"})
+    else {
+        res.send({ message: "vul Manush tmi" })
     }
 })
 router.get("/blogs/:id", async (req, res) => {
