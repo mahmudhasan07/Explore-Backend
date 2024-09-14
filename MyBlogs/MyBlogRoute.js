@@ -13,6 +13,8 @@ const route = express.Router()
 route.post("/login", async (req, res) => {
     const email = req.body
     const token = jwt.sign(email, process.env.user_token, { expiresIn: "1h" })
+    console.log(token);
+    
     res.cookie(
        "token", token,
         {

@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 
 const VerifyToken = async (req, res, next) => {
     const token = req?.cookies?.token
+    console.log(token);
     if (!token) {
         res.send({ message: "Unauthorize User" })
     }
