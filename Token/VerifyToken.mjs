@@ -2,16 +2,17 @@ import jwt from 'jsonwebtoken'
 
 const VerifyToken = async (req, res, next) => {
     const token = req?.cookies?.token
-    console.log(token);
     if (!token) {
-        res.send({ message: "Unauthorize User" })
+        return res.send({ message: "User doesn't  exist" })
+
+        // return
     }
     jwt.verify(token, process.env.user_token, async (err, decoded) => {
         if (err) {
-            res.send({ message: "Invalid Token" })
+            return res.send({ message: "Unauthorize user" })
         }
         // console.log(decoded);
-        else{
+        else {
             req.user = decoded
             next()
         }

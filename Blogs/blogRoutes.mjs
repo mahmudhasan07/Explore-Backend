@@ -1,13 +1,17 @@
 import express from 'express'
-import blogSchema from './blogSchema.js';
-import VerifyToken from '../Token/VerifyToken.js';
+import blogSchema from './blogSchema.mjs';
+import VerifyToken from '../Token/VerifyToken.mjs';
+import userSchema from './userSchema.mjs';
 const router = express.Router()
+
+
+
 
 
 router.get("/blogs", async (req, res) => {
     const query = req.query.data
     if (query) {
-        const filter = [{ name: { $regex: query , $options :"i"} }, { location: { $regex: query, $options :"i" } }]
+        const filter = [{ name: { $regex: query, $options: "i" } }, { location: { $regex: query, $options: "i" } }]
         const result = await blogSchema.find().or(filter)
         res.send(result)
     }
@@ -27,7 +31,7 @@ router.get('/my-blogs', VerifyToken, async (req, res) => {
         res.send(result)
     }
     else {
-        res.send({ message: "vul Manush tmi" })
+        res.send({ message: "User doesn't match" })
     }
 })
 router.get("/blogs/:id", async (req, res) => {
@@ -56,11 +60,36 @@ router.get('/topRatting', async (req, res) => {
 
 })
 
+
+router.get("/alllikes", async (req, res) => {
+    const data = ['mahmudhasan.hb@gmail.com', 'mehadi04102003@gmail.com']
+    const users = await userSchema.find()
+    const result = users.filter(e => data.includes(e.Email))
+    res.send(result)
+
+})
+
+
+router.get('/users', async (req, res) => {
+    const result = await userSchema.find()
+    res.send(result)
+})
+
 router.post("/blogs", async (req, res) => {
     const data = req.body
     console.log(data);
 
     const result = await blogSchema.insertMany(data)
+    res.send(result)
+})
+
+
+router.post("/users", async (req, res) => {
+    const data = req.body
+    console.log(data);
+
+    const result = await userSchema.insertMany(data)
+    console.log(result);
     res.send(result)
 })
 
