@@ -8,7 +8,8 @@ const blogSchema = new mongoose.Schema({
     hostImages: Array,
     likes: Array,
     comments: Array,
-    averageRatting: Number
+    averageRatting: Number,
+    date : String
 })
 
 export default mongoose.model("blogs", blogSchema)
