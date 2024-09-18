@@ -4,10 +4,6 @@ import VerifyToken from '../Token/VerifyToken.mjs';
 import userSchema from './userSchema.mjs';
 const router = express.Router()
 
-
-
-
-
 router.get("/blogs", async (req, res) => {
     const query = req.query.data
     if (query) {
@@ -62,23 +58,24 @@ router.get('/topRatting', async (req, res) => {
 
 
 router.get("/alllikes", async (req, res) => {
-    const data = ['mahmudhasan.hb@gmail.com', 'mehadi04102003@gmail.com']
+    const email = req.query
+    const data = email?.data.split(',')
     const users = await userSchema.find()
-    const result = users.filter(e => data.includes(e.Email))
+    const result = users.filter(e => data?.includes(e.Email))
     res.send(result)
 
 })
 
 
 router.get('/users', async (req, res) => {
+    const email = req.query
     const result = await userSchema.find()
-    res.send(result)
+    const profile = result.filter(e => e.Email.includes(email.data))
+    res.send(...profile)
 })
 
 router.post("/blogs", async (req, res) => {
     const data = req.body
-    console.log(data);
-
     const result = await blogSchema.insertMany(data)
     res.send(result)
 })
@@ -86,10 +83,7 @@ router.post("/blogs", async (req, res) => {
 
 router.post("/users", async (req, res) => {
     const data = req.body
-    console.log(data);
-
     const result = await userSchema.insertMany(data)
-    console.log(result);
     res.send(result)
 })
 
