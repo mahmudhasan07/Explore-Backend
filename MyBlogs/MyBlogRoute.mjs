@@ -36,7 +36,9 @@ route.delete("/delete/:id", async (req, res) => {
     res.send(result)
 })
 
-
+route.put("/update", async(req,res)=>{
+    const data = req.body
+})
 
 
 
