@@ -6,6 +6,8 @@ const router = express.Router()
 
 router.get("/blogs", async (req, res) => {
     const query = req.query.data
+    console.log(query);
+
     if (query) {
         const filter = [{ name: { $regex: query, $options: "i" } }, { location: { $regex: query, $options: "i" } }]
         const result = await blogSchema.find().or(filter)
@@ -70,8 +72,14 @@ router.get("/alllikes", async (req, res) => {
 router.get('/users', async (req, res) => {
     const email = req.query
     const result = await userSchema.find()
-    const profile = result.filter(e => e.Email.includes(email.data))
-    res.send(...profile)
+    console.log(email);
+    if (email.data) {
+        const profile = result.filter(e => e.Email.includes(email.data))
+        res.send(...profile)
+    }
+    else {
+        res.send(result)
+    }
 })
 
 router.post("/blogs", async (req, res) => {

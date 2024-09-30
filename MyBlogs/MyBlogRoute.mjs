@@ -1,6 +1,7 @@
 import express from "express"
 import jwt from 'jsonwebtoken'
 import blogSchema from "../Blogs/blogSchema.mjs"
+import userSchema from "../Blogs/userSchema.mjs"
 
 const route = express.Router()
 
@@ -36,8 +37,37 @@ route.delete("/delete/:id", async (req, res) => {
     res.send(result)
 })
 
-route.put("/update", async(req,res)=>{
+route.put("/update", async (req, res) => {
     const data = req.body
+})
+
+
+route.get('/users/:email', async (req, res) => {
+    const email = req.params.email
+    const query = { Email: email }
+    const result = await userSchema.findOne(query).populate('Followings').populate('Followers')
+    res.send(result)
+})
+
+
+route.patch('/user/:email', async (req, res) => {
+    const email = req.params.email
+    const data = req.body
+    console.log(data);
+
+    const query = { Email: email }
+    const options = {
+        upsert: true
+    }
+    const updateDoc = {
+        $push: {
+            Followings: data?.id
+        }
+    }
+
+    const result = await userSchema.updateOne(query, updateDoc, options)
+    res.send(result)
+
 })
 
 
