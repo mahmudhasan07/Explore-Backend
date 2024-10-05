@@ -48,9 +48,7 @@ router.get('/likes/:id', async (req, res) => {
         const like = result?.likes?.find(e => e == user)
         res.send(like)
     }
-
 })
-
 
 router.get('/topRatting', async (req, res) => {
     const result = await blogSchema.find().exists("averageRatting").sort({ averageRatting: -1 })
@@ -58,24 +56,21 @@ router.get('/topRatting', async (req, res) => {
 
 })
 
-
 router.get("/alllikes", async (req, res) => {
     const email = req.query
     const data = email?.data.split(',')
     const users = await userSchema.find()
     const result = users.filter(e => data?.includes(e.Email))
     res.send(result)
-
 })
-
 
 router.get('/users', async (req, res) => {
     const email = req.query
-    const result = await userSchema.find()
-    console.log(email);
-    if (email.data) {
+    const result = await userSchema.find().populate('Followings').populate('Followers')
+    
+    if (email?.data) {
         const profile = result.filter(e => e.Email.includes(email.data))
-        res.send(...profile)
+        res.send(...profile)    
     }
     else {
         res.send(result)
