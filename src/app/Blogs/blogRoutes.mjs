@@ -1,7 +1,7 @@
 import express from 'express'
 import blogSchema from './blogSchema.mjs';
 import VerifyToken from '../Token/VerifyToken.mjs';
-import userSchema from './userSchema.mjs';
+import userSchema from '../Users/userSchema.mjs';
 const router = express.Router()
 
 router.get("/blogs", async (req, res) => {
@@ -64,18 +64,7 @@ router.get("/alllikes", async (req, res) => {
     res.send(result)
 })
 
-router.get('/users', async (req, res) => {
-    const email = req.query
-    const result = await userSchema.find().populate('Followings').populate('Followers')
-    
-    if (email?.data) {
-        const profile = result.filter(e => e.Email.includes(email.data))
-        res.send(...profile)    
-    }
-    else {
-        res.send(result)
-    }
-})
+
 
 router.post("/blogs", async (req, res) => {
     const data = req.body
@@ -84,11 +73,7 @@ router.post("/blogs", async (req, res) => {
 })
 
 
-router.post("/users", async (req, res) => {
-    const data = req.body
-    const result = await userSchema.insertMany(data)
-    res.send(result)
-})
+
 
 router.patch(`/blogs/:id`, async (req, res) => {
     const id = req.params.id
