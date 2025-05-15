@@ -2,8 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
-import blogRoutes from "./Blogs/blogRoutes.mjs"
-import myBlogs from './MyBlogs/MyBlogRoute.mjs'
+import blogRoutes from "./app/modules/Blogs/blogRoutes.mjs"
+import userRoutes from './app/modules/Users/userRoutes.mjs'
 import 'dotenv/config'
 import jwt from 'jsonwebtoken'
 const app = express()
@@ -19,7 +19,7 @@ async function Run() {
     try {
         await mongoose.connect(`mongodb+srv://${process.env.user_name}:${process.env.user_pass}@cluster0.oqk84kq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`)
         app.use("/", blogRoutes)
-        app.use('/', myBlogs)
+        app.use('/', userRoutes)
         console.log("Mongoose connect to the MongoDB");
 
     }
