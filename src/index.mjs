@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import blogRoutes from "./app/modules/Blogs/blogRoutes.mjs"
 import userRoutes from './app/modules/Users/userRoutes.mjs'
 import 'dotenv/config'
-import jwt from 'jsonwebtoken'
 const app = express()
 const port = process.env.PORT || 2000
 
@@ -16,6 +15,10 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 async function Run() {
+
+    console.log(process.env.user_name, process.env.user_pass);
+    
+
     try {
         await mongoose.connect(`mongodb+srv://${process.env.user_name}:${process.env.user_pass}@cluster0.oqk84kq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`)
         app.use("/", blogRoutes)

@@ -1,6 +1,6 @@
 import express from 'express'
 import blogSchema from './blogSchema.mjs';
-import VerifyToken from '../Token/VerifyToken.mjs';
+import VerifyToken from '../../../Token/VerifyToken.mjs';
 import userSchema from '../Users/userSchema.mjs';
 const router = express.Router()
 

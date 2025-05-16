@@ -1,6 +1,7 @@
+import { Router } from "express";
 import userSchema from "./userSchema.mjs";
 
-const route = express.Router()
+const route = Router()
 
 
 route.get('/users/:email', async (req, res) => {
