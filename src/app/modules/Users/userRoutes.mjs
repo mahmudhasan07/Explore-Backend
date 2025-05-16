@@ -14,11 +14,11 @@ route.get('/users/:email', async (req, res) => {
 })
 
 route.get('/users', async (req, res) => {
-    const email = req.query
+    const email = req.query?.data
     const result = await userSchema.find().populate('Followings').populate('Followers')
     
-    if (email?.data) {
-        const profile = result.filter(e => e.Email.includes(email.data))
+    if (email) {
+        const profile = result.filter(e => e.Email.includes(email))
         res.send(...profile)    
     }
     else {
